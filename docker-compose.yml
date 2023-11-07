@@ -1,45 +1,45 @@
 version: '3'
 
 services:
-  kly-odoo15-db:
-    image: postgres:14
-    container_name: klyfoods-odoo15-db
+  kly-odoo13-db:
+    image: postgres:11.12
     user: root
     environment:
+      - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
-      - POSTGRES_PASSWORD=odoo15@2021      
       - POSTGRES_DB=postgres
     restart: always             # run as a service
     volumes:
-        - ./postgresql:/var/lib/postgresql/data
+      - ./postgresql:/var/lib/postgresql/data
     networks:
       - npm-network
 
-  kly-odoo15:
-    image: odoo:15
-    container_name: klyfoods-odoo15
+  kly-odoo13:
+    image: tvt253/odoo13:klf
+    container_name: kly-odoo13
     user: root
     depends_on:
-      - kly-odoo15-db
+      - kly-odoo13-db
     ports:
-      - "10015:8069"
-#      - "20015:8072" # live chat
+      - "10013:8069"
+#      - "20113:8072" # live chat
     tty: true
     command: --
+#    command: odoo scaffold /mnt/extra-addons/test_module
     environment:
-      - HOST=kly-odoo15-db
+      - HOST=kly-odoo13-db
       - USER=odoo
-      - PASSWORD=odoo15@2021
+      - PASSWORD=odoo
     volumes:
       #- /etc/timezone:/etc/timezone:ro
       #- /etc/localtime:/etc/localtime:ro
       # - ./entrypoint.sh:/entrypoint.sh   # if you want to install additional Python packages, uncomment this line!
-      - ./addons:/mnt/extra-addons
+#      - ./addons/accounting:/mnt/extra-addons/accounting
+#      - ./addons/extra_addons:/mnt/extra-addons/extra_addons
       - ./etc:/etc/odoo
     restart: always             # run as a service
     networks:
       - npm-network
-
 networks:
   npm-network:
     external: true
