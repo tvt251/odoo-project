@@ -12,8 +12,8 @@ services:
     restart: always             # run as a service
     volumes:
         - ./postgresql:/var/lib/postgresql/data
-#    networks:
-#      - npm-network
+    networks:
+      - npm-network
 
   klf-odoo15:
     image: tvt253/odoo15:klf
@@ -22,8 +22,8 @@ services:
     depends_on:
       - klf-odoo15-db
     ports:
-      - "10013:8069"
-#      - "20015:8072" # live chat
+      - "10015:8069"
+      - "20015:8072" # live chat
     tty: true
     command: --
     environment:
@@ -34,7 +34,7 @@ services:
       #- /etc/timezone:/etc/timezone:ro
       #- /etc/localtime:/etc/localtime:ro
       # - ./entrypoint.sh:/entrypoint.sh   # if you want to install additional Python packages, uncomment this line!
-      #- ./addons:/mnt/extra-addons
+      - ./addons:/mnt/custom-addons
       - ./etc:/etc/odoo
     restart: always             # run as a service
     networks:
