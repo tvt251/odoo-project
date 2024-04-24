@@ -1,0 +1,4 @@
+#install pandas for ohrms-core module
+sudo apt-get update -y
+sudo apt-get install -y python3-pandas
+pip3 install pandas
